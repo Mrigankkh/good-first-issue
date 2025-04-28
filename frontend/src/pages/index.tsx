@@ -1,4 +1,4 @@
-import { useEffect, useState , useMemo} from "react";
+import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 
 import { Issue } from "@/types/issue";
@@ -45,17 +45,6 @@ export default function HomePage() {
     new Set(issues.map((issue) => issue.repository.language).filter(Boolean))
   ).sort();
 
-
-  const recommendedIssue = useMemo(() => {
-    if (issues.length === 0) return null;
-    
-    const faangIssue = issues.find(issue =>
-      FAANG_ORGS.includes(issue.organization.toLowerCase()) && !issue.isAssigned
-    );
-    
-    return faangIssue || issues[0]; 
-  }, [issues]);
-
   useEffect(() => {
     const fetchIssues = async () => {
       try {
@@ -93,13 +82,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* HEADER */}
       <Header />
-      {recommendedIssue && (
-        <div className="p-4">
-          <h2 className="text-2xl font-semibold mb-2">Recommended Issue for You 🎯</h2>
-          {/* Your IssueCard component here */}
-          <IssueCard issue={recommendedIssue} />
-        </div>
-      )}
+
       {/* MAIN */}
       <main className="flex-1 container mx-auto px-4 py-6">
         {/* FILTERS */}
