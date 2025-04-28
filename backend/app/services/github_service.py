@@ -56,6 +56,10 @@ async def fetch_all_issues_from_github() -> list[Issue]:
                     break  
 
                 except httpx.HTTPError as e:
+                    if e.response.status_code == 403:
+                            print("⚠️ Got 403 Forbidden. Sleeping for 60 seconds before retrying...")
+                            await asyncio.sleep(60)
+                            continue
                     print(f"❌ HTTP error (try {attempt+1}): {e}")
                     await asyncio.sleep(2 * (attempt + 1))  # backoff
                 except Exception as e:
