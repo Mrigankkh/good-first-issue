@@ -6,6 +6,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FilterBar from "@/components/FilterBar";
 import IssuesGrid from "@/components/IssuesGrid";
+import RecommendedIssue from "@/components/RecommendedIssue";
+import { getRecommendedIssue } from "@/utils/recommendationEngine";
+
+// inside HomePage component
 
 export default function HomePage() {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -18,6 +22,8 @@ export default function HomePage() {
 
   const [selectedSort, setSelectedSort] = useState<string>("stars");
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
+  const recommendedIssue = getRecommendedIssue(issues);
+
   const filterProps = {
     searchRepo,
     setSearchRepo,
@@ -72,15 +78,19 @@ export default function HomePage() {
             </h2>
           </div>
         ) : (
-          <IssuesGrid
-            issues={issues}
-            selectedLanguage={selectedLanguage}
-            searchRepo={searchRepo}
-            searchOrg={searchOrg}
-            showFAANGOnly={showFAANGOnly}
-            showOnlyActive={showOnlyActive}
-            selectedSort={selectedSort}
-          />
+          <>
+            <RecommendedIssue issue={recommendedIssue} />
+
+            <IssuesGrid
+              issues={issues}
+              selectedLanguage={selectedLanguage}
+              searchRepo={searchRepo}
+              searchOrg={searchOrg}
+              showFAANGOnly={showFAANGOnly}
+              showOnlyActive={showOnlyActive}
+              selectedSort={selectedSort}
+            />
+          </>
         )}
       </main>
 

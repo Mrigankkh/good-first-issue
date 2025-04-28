@@ -14,3 +14,8 @@ start-mock:
 	cd mock_backend && \
 	npm install && \
 	node server.js
+
+run-local:
+	make start-backend & \
+	make start-frontend & \
+
