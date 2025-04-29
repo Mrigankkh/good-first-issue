@@ -8,6 +8,7 @@ import FilterBar from "@/components/FilterBar";
 import IssuesGrid from "@/components/IssuesGrid";
 import RecommendedIssue from "@/components/RecommendedIssue";
 import { getRecommendedIssue } from "@/utils/recommendationEngine";
+import SettingsModal from "@/modals/SettingModal";
 
 export default function HomePage() {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
 
   const recommendedIssue = getRecommendedIssue(issues);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const filterProps = {
     searchRepo,
@@ -67,7 +69,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* HEADER */}
-      <Header />
+      <Header onOpenSettings={() => setIsSettingsOpen(true)} />
+
 
       {/* MAIN */}
       <main className="flex-1 container mx-auto px-4 py-6">
@@ -113,6 +116,11 @@ export default function HomePage() {
             />
           </>
         )}
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
       </main>
 
       {/* FOOTER */}
