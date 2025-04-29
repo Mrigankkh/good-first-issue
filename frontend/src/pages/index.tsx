@@ -8,7 +8,7 @@ import FilterBar from "@/components/FilterBar";
 import IssuesGrid from "@/components/IssuesGrid";
 import RecommendedIssue from "@/components/RecommendedIssue";
 import { getRecommendedIssue } from "@/utils/recommendationEngine";
-import SettingsModal from "@/modals/SettingModal";
+import SettingsModal from "@/components/settings/SettingModal";
 
 export default function HomePage() {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -25,6 +25,8 @@ export default function HomePage() {
 
   const recommendedIssue = getRecommendedIssue(issues);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
 
   const filterProps = {
     searchRepo,

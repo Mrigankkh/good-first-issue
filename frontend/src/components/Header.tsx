@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SettingsModal from "@/modals/SettingModal";
+import SettingsModal from "@/components/settings/SettingModal";
 export default function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
 
 
