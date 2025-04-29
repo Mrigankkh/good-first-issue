@@ -25,7 +25,7 @@ FETCH_GOOD_FIRST_ISSUES_QUERY = load_query("fetch_issues.graphql")
 async def fetch_all_issues_from_github() -> list[Issue]:
     all_issues = []
     after_cursor = None
-    query_string = 'label:"good first issue" state:open created:>=2023-04-27 is:issue'
+    query_string = 'label:"good first issue" state:open created:>=2024-04-27 is:issue'
 
     total_fetched = 0
     page_num = 1

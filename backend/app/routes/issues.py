@@ -3,6 +3,7 @@ from app.controllers.issues_controller import get_issues
 
 router = APIRouter()
 
+# At the moment, the issue endpoint has a few query params. This is if it is required in the future if I plan to do the sort and filter on backend
 @router.get("/issues")
 async def fetch_issues(
     language: str = Query(None),

@@ -1,9 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.issues import router as issues_router
-from app.services.github_service import fetch_all_issues_from_github
-from app.services.issues_store import save_issues_to_cache
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.add_middleware(

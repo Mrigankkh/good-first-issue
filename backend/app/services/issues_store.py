@@ -4,17 +4,30 @@ import asyncio
 import redis.asyncio as redis
 from app.models.issue_model import Issue
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
 REDIS_URL = os.getenv("REDIS_URL")
 REDIS_KEY = "goodfirstissue"
+LAST_UPDATED_KEY = "goodfirstissue:last_updated"
 
 r = redis.from_url(
     REDIS_URL,
     decode_responses=True,
     max_connections=5
 )
+
+
+async def update_last_updated_timestamp():
+    timestamp = int(time.time())
+    await r.set(LAST_UPDATED_KEY, timestamp)
+
+async def get_last_updated_timestamp() -> int | None:
+    data = await r.get(LAST_UPDATED_KEY)
+    if data:
+        return int(data)
+    return None
 
 async def save_issues_to_cache(issues: list[Issue]):
     try:
