@@ -29,7 +29,7 @@ export default function HomePage() {
   const recommendedIssue = getRecommendedIssue(issues);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [lastUpdatedTimestamp, setLastUpdatedTimestamp] = useState<string | null>(null);
 
   const filterProps = {
     searchRepo,
@@ -66,14 +66,30 @@ export default function HomePage() {
     }
   };
 
+  const fetchlastUpdatedTimstamp = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_SERVER_URL}/api/last_updated`
+      );
+      setLastUpdatedTimestamp(response.data.data);
+      console.log("Last Updated Timestamp:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching last updated timestamp:", error);
+      setError("Failed to load last updated timestamp. Please try again later.");
+    } 
+  };
+
+
+
   useEffect(() => {
     fetchIssues(); // Initial load
+    fetchlastUpdatedTimstamp(); 
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* HEADER */}
-      <Header onOpenSettings={() => setIsSettingsOpen(true)} />
+      <Header updateTimestamp = {lastUpdatedTimestamp} onOpenSettings={() => setIsSettingsOpen(true)} />
 
 
       {/* MAIN */}

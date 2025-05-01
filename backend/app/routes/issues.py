@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
-from app.controllers.issues_controller import get_issues
+from app.controllers.issues_controller import get_issues, get_issue_last_updated
+
 
 router = APIRouter()
 
@@ -12,3 +13,7 @@ async def fetch_issues(
     limit: int = Query(20)
 ):
     return await get_issues()
+
+@router.get("/last_updated")
+async def get_last_updated():
+    return await get_issue_last_updated()
