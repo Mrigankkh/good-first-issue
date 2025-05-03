@@ -19,6 +19,7 @@ Built using:
 -  **Filter by organization** (FAANG + others)
 -  **Recommended Issue** 
 -  **Language filters**, **sorting by stars**, **last updated**
+-  Worker using Github graphQL API
 
 
 ---
