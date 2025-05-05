@@ -1,0 +1,73 @@
+name: Build & Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'backend/**' ]
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository }}/fastapi
+
+jobs:
+  build:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    # 1️⃣ Declare job outputs
+    outputs:
+      image: ${{ steps.publish-image.outputs.image }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build & push Docker image
+        id: publish-image
+        run: |
+          IMAGE=${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker build -t $IMAGE ./backend
+          docker push $IMAGE
+          # publish the image name as a step output
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+  deploy:
+    name: Deploy to Azure
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      # 2️⃣ Log in to Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Update FastAPI Container App
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az containerapp update \
+              --name fastapi-api \
+              --resource-group my-rg \
+              --image ${{ needs.build.outputs.image }} \
+              --registry-server ghcr.io \
+              --registry-username ${{ github.actor }} \
+              --registry-password ${{ secrets.GHCR_TOKEN }}
+
+      - name: Update Scheduled Jobbac
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az containerapp job update \
+              --name db-refresh \
+              --resource-group my-rg \
+              --image ${{ needs.build.outputs.image }} \
+              --registry-server ghcr.io \
+              --registry-username ${{ github.actor }} \
+              --registry-password ${{ secrets.GHCR_TOKEN }}
