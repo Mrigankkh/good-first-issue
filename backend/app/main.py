@@ -5,9 +5,9 @@ from worker import refresh_loop
 import asyncio
 app = FastAPI()
 
-@app.on_event("startup")
-async def start_worker():
-    asyncio.create_task(refresh_loop())
+# @app.on_event("startup")
+# async def start_worker():
+#     asyncio.create_task(refresh_loop())
     
 app.add_middleware(
     CORSMiddleware,
