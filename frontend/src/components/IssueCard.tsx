@@ -22,7 +22,7 @@ export default function IssueCard({ issue }: IssueCardProps) {
       className="block p-4 border rounded-lg shadow-sm hover:shadow-md bg-white transition"
     >
       {/* Issue Title */}
-      <h2 className="text-lg font-bold text-gray-900 mb-2">{issue.title}</h2>
+      <h2 className="text-lg font-bold text-gray-900 mb-2 text-break">{issue.title}</h2>
 
       {/* Repo Info */}
       <div className="text-sm text-gray-700 mb-1">
