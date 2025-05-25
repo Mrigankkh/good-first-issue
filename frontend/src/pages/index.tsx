@@ -66,24 +66,24 @@ export default function HomePage() {
     }
   };
 
-  // const fetchlastUpdatedTimstamp = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${BACKEND_SERVER_URL}/api/last_updated`
-  //     );
-  //     setLastUpdatedTimestamp(response.data.data);
-  //     console.log("Last Updated Timestamp:", response.data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching last updated timestamp:", error);
+  const fetchLastUpdatedTimestamp = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_SERVER_URL}/api/last_updated`
+      );
+      setLastUpdatedTimestamp(response.data.data);
+      console.log("Last Updated Timestamp:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching last updated timestamp:", error);
      
-  //   } 
-  // };
+    } 
+  };
 
 
 
   useEffect(() => {
     fetchIssues(); // Initial load
-   //fetchlastUpdatedTimstamp(); 
+   fetchLastUpdatedTimestamp(); 
   }, []);
 
   return (

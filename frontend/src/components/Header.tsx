@@ -15,8 +15,8 @@ export default function Header({
 
         <div className="flex items-center space-x-4">
           <h1 className="text-sm text-gray-400">
-            {/* Last Updated: {lastUpdated}{" hours ago"} */}
-            Last Updated: {"6 hours ago"} 
+            Last Updated: {lastUpdated}{" hours ago"}
+            {/* Last Updated: {"6 hours ago"}  */}
           </h1>
           <button
             onClick={onOpenSettings}
