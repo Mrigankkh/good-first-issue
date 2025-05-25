@@ -45,7 +45,13 @@ git clone https://github.com/yourusername/goodfirstissues.git
 cd goodfirstissues
 ```
 
-### 2. Backend Setup
+### 2. Download Requirements
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Backend Setup
 
 ```bash
 # Create virtualenv
@@ -61,7 +67,7 @@ GITHUB_TOKEN=your_github_token
 REDIS_URL=your_upstash_redis_url
 ```
 
-### 3. Frontend Setup using Next.js
+### 4. Frontend Setup using Next.js
 ```bash
 cd frontend
 npm install
