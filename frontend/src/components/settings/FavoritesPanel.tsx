@@ -1,10 +1,25 @@
+
 import { useEffect, useState } from "react";
 import { DEFAULT_ORGS } from "@/constants/orgs";
 
 const FAVORITES_KEY = "goodfirstissues_favorites";
 
+// Icon components - replace with your icon library
+const PlusIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+  </svg>
+);
+
+const TrashIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+  </svg>
+);
+
 export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
   const [orgs, setOrgs] = useState<{ name: string; checked: boolean }[]>([]);
+  const [newOrgName, setNewOrgName] = useState("");
 
   useEffect(() => {
     const cached = localStorage.getItem(FAVORITES_KEY);
@@ -21,11 +36,17 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
     setOrgs(updated);
   };
 
-  const addOrg = (name: string) => {
-    if (!name.trim()) return;
-    const normalized = name.trim().toLowerCase();
-    if (orgs.find((o) => o.name === normalized)) return; // Avoid duplicates
+  const removeOrg = (index: number) => {
+    const updated = orgs.filter((_, i) => i !== index);
+    setOrgs(updated);
+  };
+
+  const addOrg = () => {
+    if (!newOrgName.trim()) return;
+    const normalized = newOrgName.trim().toLowerCase();
+    if (orgs.find((o) => o.name === normalized)) return;
     setOrgs([...orgs, { name: normalized, checked: true }]);
+    setNewOrgName("");
   };
 
   const save = () => {
@@ -33,46 +54,100 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
-  return (
-    <div>
-      <h3 className="text-xl font-bold mb-4">Select Favorite Organizations</h3>
+  const checkedCount = orgs.filter(o => o.checked).length;
 
-      <div className="space-y-2 mb-4 max-h-64 overflow-y-auto">
-        {orgs.map((org, index) => (
-          <label key={org.name} className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={org.checked}
-              onChange={() => toggleOrg(index)}
-            />
-            <span className="capitalize">{org.name}</span>
-          </label>
-        ))}
+  return (
+    <div className="max-w-3xl">
+      {/* Header */}
+      <div className="mb-8">
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">Favorite Organizations</h3>
+        <p className="text-gray-600">
+          Select the organizations you want to track. You're currently following {checkedCount} organization{checkedCount !== 1 ? 's' : ''}.
+        </p>
       </div>
 
-      <input
-        placeholder="Add new org..."
-        className="border px-3 py-2 rounded w-full mb-4"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            addOrg((e.target as HTMLInputElement).value);
-            (e.target as HTMLInputElement).value = "";
-          }
-        }}
-      />
+      {/* Add new org */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Add New Organization
+        </label>
+        <div className="flex gap-2">
+          <input
+            placeholder="Enter organization name..."
+            value={newOrgName}
+            onChange={(e) => setNewOrgName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                addOrg();
+              }
+            }}
+            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          />
+          <button
+            onClick={addOrg}
+            className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 font-medium"
+          >
+            <PlusIcon />
+            Add
+          </button>
+        </div>
+      </div>
 
-      <div className="flex justify-end space-x-4">
+      {/* Organizations list */}
+      <div className="bg-white rounded-xl border border-gray-200">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <h4 className="text-sm font-medium text-gray-700">Your Organizations</h4>
+        </div>
+        <div className="max-h-96 overflow-y-auto">
+          {orgs.length === 0 ? (
+            <div className="px-4 py-8 text-center text-gray-500">
+              No organizations added yet. Add one above to get started!
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {orgs.map((org, index) => (
+                <label
+                  key={`${org.name}-${index}`}
+                  className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors duration-150 cursor-pointer group"
+                >
+                  <input
+                    type="checkbox"
+                    checked={org.checked}
+                    onChange={() => toggleOrg(index)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all"
+                  />
+                  <span className="ml-3 flex-1 text-gray-900 capitalize">
+                    {org.name}
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeOrg(index);
+                    }}
+                    className="ml-2 p-1.5 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-all duration-200 rounded hover:bg-red-50"
+                  >
+                    <TrashIcon />
+                  </button>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end mt-8 space-x-3">
         <button
           onClick={onClose}
-          className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition"
+          className="px-6 py-2.5 rounded-lg font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
         >
           Cancel
         </button>
         <button
           onClick={save}
-          className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+          className="px-6 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 shadow-sm"
         >
-          Save
+          Save Changes
         </button>
       </div>
     </div>

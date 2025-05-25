@@ -3,6 +3,13 @@ import { getPersonalization, setPersonalization } from "@/lib/store";
 
 const PAGE_SIZE_KEY = "goodfirstissues_ipp";
 
+// Icon component - replace with your icon library
+const CheckIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+  </svg>
+);
+
 export default function PersonalizationPanel({
   onClose,
 }: {
@@ -22,40 +29,91 @@ export default function PersonalizationPanel({
     onClose();
   };
 
-  return (
-    <div>
-      <h3 className="text-xl font-bold mb-4">Pagination Settings</h3>
-      <p className="text-sm text-gray-600 mb-4">
-        Choose how many issues to show per page.
-      </p>
+  const options = [
+    { value: 10, label: "10 issues per page", description: "Compact view for quick browsing" },
+    { value: 20, label: "20 issues per page", description: "Recommended for most users" },
+    { value: 50, label: "50 issues per page", description: "Extended view for power users" },
+    { value: 100, label: "100 issues per page", description: "Maximum density" },
+  ];
 
-      <div className="space-y-3">
-        {[10, 20, 50, 100].map((num) => (
-          <label key={num} className="flex items-center space-x-3">
-            <input
-              type="radio"
-              name="issuesPerPage"
-              value={num}
-              checked={selected === num}
-              onChange={() => setSelected(num)}
-            />
-            <span>{num} issues per page</span>
-          </label>
-        ))}
+  return (
+    <div className="max-w-2xl">
+      {/* Header */}
+      <div className="mb-8">
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">Pagination Settings</h3>
+        <p className="text-gray-600">
+          Control how many issues appear on each page. This setting helps you customize your browsing experience.
+        </p>
       </div>
 
-      <div className="flex justify-end mt-6 space-x-4">
+      {/* Options */}
+      <div className="bg-white rounded-xl border border-gray-200 p-2">
+        <div className="space-y-2">
+          {options.map((option) => (
+            <label
+              key={option.value}
+              className={`relative flex items-start p-4 rounded-lg cursor-pointer transition-all duration-200 ${
+                selected === option.value
+                  ? "bg-blue-50 border-2 border-blue-500"
+                  : "hover:bg-gray-50 border-2 border-transparent"
+              }`}
+            >
+              <div className="flex items-center h-5">
+                <input
+                  type="radio"
+                  name="issuesPerPage"
+                  value={option.value}
+                  checked={selected === option.value}
+                  onChange={() => setSelected(option.value)}
+                  className="sr-only"
+                />
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                    selected === option.value
+                      ? "border-blue-600 bg-blue-600"
+                      : "border-gray-300 bg-white"
+                  }`}
+                >
+                  {selected === option.value && (
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  )}
+                </div>
+              </div>
+              <div className="ml-4 flex-1">
+                <div className={`text-base font-medium ${
+                  selected === option.value ? "text-blue-900" : "text-gray-900"
+                }`}>
+                  {option.label}
+                </div>
+                <div className={`text-sm mt-1 ${
+                  selected === option.value ? "text-blue-700" : "text-gray-500"
+                }`}>
+                  {option.description}
+                </div>
+              </div>
+              {selected === option.value && (
+                <div className="ml-4 flex-shrink-0 text-blue-600">
+                  <CheckIcon />
+                </div>
+              )}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end mt-8 space-x-3">
         <button
           onClick={onClose}
-          className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition"
+          className="px-6 py-2.5 rounded-lg font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
         >
           Cancel
         </button>
         <button
           onClick={save}
-          className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition"
+          className="px-6 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 shadow-sm"
         >
-          Save
+          Save Changes
         </button>
       </div>
     </div>
