@@ -1,17 +1,24 @@
 import { useState, useEffect, Fragment } from "react";
-import { Dialog, DialogPanel, Transition, TransitionChild } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 import FavoritesPanel from "./FavoritesPanel";
 import PersonalizationPanel from "./PersonalizationPanel";
-import {SettingsIcon} from '../../icons/settings'
-import {StarIcon} from '../../icons/star'
-import {PersonIcon} from '../../icons/person'
-import {BrushIcon} from '../../icons/brush'
+import AboutPanel from "./AboutPanel";
 import AppearancePanel from "./AppearancePanel";
 
-type Panel = "favorites" | "personalization" | "appearance";
+import { SettingsIcon } from "../../icons/settings";
+import { StarIcon } from "../../icons/star";
+import { PersonIcon } from "../../icons/person";
+import { BrushIcon } from "../../icons/brush";
+import { InfoIcon } from "../../icons/info";
+
+type Panel = "favorites" | "personalization" | "appearance" | "about";
 
 // Icons - you can replace these with actual icon components from lucide-react or heroicons
-
 
 export default function SettingsModal({
   isOpen,
@@ -26,6 +33,7 @@ export default function SettingsModal({
     { id: "favorites", label: "Select Favorites", icon: <StarIcon /> },
     { id: "personalization", label: "Personalization", icon: <PersonIcon /> },
     { id: "appearance", label: "Appearance", icon: <BrushIcon /> },
+    { id: "about", label: "About", icon: <InfoIcon /> },
   ];
 
   return (
@@ -63,7 +71,9 @@ export default function SettingsModal({
                       <div className="p-2 bg-yellow-400 rounded-lg text-gray-900">
                         <SettingsIcon />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900">Settings</h2>
+                      <h2 className="text-xl font-semibold text-gray-900">
+                        Settings
+                      </h2>
                     </div>
                   </div>
 
@@ -79,7 +89,13 @@ export default function SettingsModal({
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
-                        <span className={activePanel === item.id ? "text-yellow-600" : "text-gray-400"}>
+                        <span
+                          className={
+                            activePanel === item.id
+                              ? "text-yellow-600"
+                              : "text-gray-400"
+                          }
+                        >
                           {item.icon}
                         </span>
                         <span>{item.label}</span>
@@ -92,9 +108,16 @@ export default function SettingsModal({
                 <div className="flex-1 bg-gray-50">
                   <div className="h-full overflow-y-auto">
                     <div className="p-8">
-                      {activePanel === "favorites" && <FavoritesPanel onClose={onClose} />}
-                      {activePanel === "personalization" && <PersonalizationPanel onClose={onClose} />}
-                      {activePanel === "appearance" && <AppearancePanel onClose={onClose} />}
+                      {activePanel === "favorites" && (
+                        <FavoritesPanel onClose={onClose} />
+                      )}
+                      {activePanel === "personalization" && (
+                        <PersonalizationPanel onClose={onClose} />
+                      )}
+                      {activePanel === "appearance" && (
+                        <AppearancePanel onClose={onClose} />
+                      )}
+                      {activePanel === "about" && <AboutPanel />}
                     </div>
                   </div>
                 </div>
