@@ -5,11 +5,12 @@ import PersonalizationPanel from "./PersonalizationPanel";
 import {SettingsIcon} from '../../icons/settings'
 import {StarIcon} from '../../icons/star'
 import {PersonIcon} from '../../icons/person'
-type Panel = "favorites" | "personalization";
+import {BrushIcon} from '../../icons/brush'
+import AppearancePanel from "./AppearancePanel";
+
+type Panel = "favorites" | "personalization" | "appearance";
 
 // Icons - you can replace these with actual icon components from lucide-react or heroicons
-
-
 
 
 export default function SettingsModal({
@@ -24,6 +25,7 @@ export default function SettingsModal({
   const menuItems = [
     { id: "favorites", label: "Select Favorites", icon: <StarIcon /> },
     { id: "personalization", label: "Personalization", icon: <PersonIcon /> },
+    { id: "appearance", label: "Appearance", icon: <BrushIcon /> },
   ];
 
   return (
@@ -92,6 +94,7 @@ export default function SettingsModal({
                     <div className="p-8">
                       {activePanel === "favorites" && <FavoritesPanel onClose={onClose} />}
                       {activePanel === "personalization" && <PersonalizationPanel onClose={onClose} />}
+                      {activePanel === "appearance" && <AppearancePanel onClose={onClose} />}
                     </div>
                   </div>
                 </div>

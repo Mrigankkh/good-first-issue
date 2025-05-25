@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { getPersonalization, setPersonalization } from "@/lib/store";
 
+import { CheckIcon } from "../../icons/check";
+
 const PAGE_SIZE_KEY = "goodfirstissues_ipp";
 
-// Icon component - replace with your icon library
-const CheckIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-  </svg>
-);
 
 export default function PersonalizationPanel({
   onClose,
@@ -54,7 +50,7 @@ export default function PersonalizationPanel({
               key={option.value}
               className={`relative flex items-start p-4 rounded-lg cursor-pointer transition-all duration-200 ${
                 selected === option.value
-                  ? "bg-blue-50 border-2 border-blue-500"
+                  ? "bg-yellow-50 border-2 border-yellow-400"
                   : "hover:bg-gray-50 border-2 border-transparent"
               }`}
             >
@@ -70,7 +66,7 @@ export default function PersonalizationPanel({
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                     selected === option.value
-                      ? "border-blue-600 bg-blue-600"
+                      ? "border-yellow-400 bg-yellow-400"
                       : "border-gray-300 bg-white"
                   }`}
                 >
@@ -81,18 +77,18 @@ export default function PersonalizationPanel({
               </div>
               <div className="ml-4 flex-1">
                 <div className={`text-base font-medium ${
-                  selected === option.value ? "text-blue-900" : "text-gray-900"
+                  selected === option.value ? "text-gray-900" : "text-gray-900"
                 }`}>
                   {option.label}
                 </div>
                 <div className={`text-sm mt-1 ${
-                  selected === option.value ? "text-blue-700" : "text-gray-500"
+                  selected === option.value ? "text-gray-700" : "text-gray-500"
                 }`}>
                   {option.description}
                 </div>
               </div>
               {selected === option.value && (
-                <div className="ml-4 flex-shrink-0 text-blue-600">
+                <div className="ml-4 flex-shrink-0 text-yellow-600">
                   <CheckIcon />
                 </div>
               )}
@@ -111,7 +107,7 @@ export default function PersonalizationPanel({
         </button>
         <button
           onClick={save}
-          className="px-6 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+          className="px-6 py-2.5 rounded-lg font-medium text-gray-900 bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200 shadow-sm"
         >
           Save Changes
         </button>

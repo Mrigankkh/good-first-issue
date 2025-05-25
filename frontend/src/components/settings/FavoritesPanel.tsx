@@ -1,21 +1,13 @@
-
 import { useEffect, useState } from "react";
 import { DEFAULT_ORGS } from "@/constants/orgs";
 
+import {PlusIcon} from '../../icons/plus'
+import { TrashIcon } from "../../icons/trash";
+
 const FAVORITES_KEY = "goodfirstissues_favorites";
 
-// Icon components - replace with your icon library
-const PlusIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-  </svg>
-);
 
-const TrashIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-  </svg>
-);
+
 
 export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
   const [orgs, setOrgs] = useState<{ name: string; checked: boolean }[]>([]);
@@ -71,7 +63,7 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Add New Organization
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 text-gray-700">
           <input
             placeholder="Enter organization name..."
             value={newOrgName}
@@ -81,11 +73,11 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
                 addOrg();
               }
             }}
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
           />
           <button
             onClick={addOrg}
-            className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 font-medium"
+            className="px-4 py-2.5 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors duration-200 flex items-center gap-2 font-medium"
           >
             <PlusIcon />
             Add
@@ -114,7 +106,7 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
                     type="checkbox"
                     checked={org.checked}
                     onChange={() => toggleOrg(index)}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 transition-all"
+                    className="w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500 focus:ring-2 transition-all accent-yellow-400"
                   />
                   <span className="ml-3 flex-1 text-gray-900 capitalize">
                     {org.name}
@@ -145,7 +137,7 @@ export default function FavoritesPanel({ onClose }: { onClose: () => void }) {
         </button>
         <button
           onClick={save}
-          className="px-6 py-2.5 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+          className="px-6 py-2.5 rounded-lg font-medium text-gray-900 bg-yellow-400 hover:bg-yellow-500 transition-colors duration-200 shadow-sm"
         >
           Save Changes
         </button>
