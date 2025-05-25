@@ -6,7 +6,8 @@ from app.models.issue_model import Issue
 from dotenv import load_dotenv
 import time
 
-load_dotenv()
+load_dotenv(".env.local", override=True)
+load_dotenv(".env")
 
 REDIS_URL = os.getenv("REDIS_URL")
 REDIS_KEY = "goodfirstissue"
